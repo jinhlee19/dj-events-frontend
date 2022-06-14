@@ -1,6 +1,9 @@
-// nested routes 작성 요령
-import React from 'react';
+import Layout from '../../components/Layout';
 
-export default function Eventspage() {
-	return <div>Eventspage</div>;
+export default function events() {
+	return (
+		<Layout>
+			<h1>My Events</h1>
+		</Layout>
+	);
 }
