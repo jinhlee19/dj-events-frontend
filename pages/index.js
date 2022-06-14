@@ -4,9 +4,9 @@ export default function HomePage() {
 		<div>
 			<Layout>
 				<h1>Home</h1>
+				<p>This is an app to find the latest DJ and other musical events</p>
+				<p>Version: 1.0.0</p>
 			</Layout>
-			<p>This is an app to find the latest DJ and other musical events</p>
-			<p>Version: 1.0.0</p>
 		</div>
 	);
 }
