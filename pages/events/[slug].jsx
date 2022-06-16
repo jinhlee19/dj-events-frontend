@@ -63,9 +63,10 @@ export async function getStaticProps({ params: { slug } }) {
 	const res = await fetch(`${API_URL}/api/events?populate=*&_sort=date:ASC`);
 	const json = await res.json();
 	const events = json.data;
-	// console.log(events);
+	console.log(events);
 	return {
 		props: { evt: events[0] },
+		// props: { evt: events.attributes.slug },
 		revalidate: 1,
 	};
 }
