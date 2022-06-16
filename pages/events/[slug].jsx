@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
@@ -7,11 +6,11 @@ import { API_URL } from '@/config/index';
 import styles from '@/styles/Event.module.css';
 
 export default function EventPage({ evt }) {
+	const { name, date, time, slug, image, address, performers, description, venue } = evt.attributes;
+	const imgSrc = evt.attributes.image.data.attributes.formats.medium.url;
 	const deleteEvent = e => {
 		console.log('delete');
 	};
-	const router = useRouter();
-	// console.log(router);
 	return (
 		<Layout>
 			<div className={styles.event}>
@@ -26,20 +25,20 @@ export default function EventPage({ evt }) {
 					</a>
 				</div>
 				<span>
-					{evt.date} at {evt.time}
+					{new Date(date).toLocaleDateString('en-US')} at {time}
 				</span>
-				<h1>{evt.name}</h1>
-				{evt.image && (
+				<h1>{name}</h1>
+				{evt.attributes.image && (
 					<div className={styles.img}>
-						<Image src={evt.image} width={960} height={600} alt="" />
+						<Image src={imgSrc} width={960} height={600} alt="" />
 					</div>
 				)}
 				<h3>Performers:</h3>
-				<p>{evt.performers}</p>
+				<p>{performers}</p>
 				<h3>Description:</h3>
-				<p>{evt.description}</p>
-				<h3>Venue: {evt.venue}</h3>
-				<p>{evt.address}</p>
+				<p>{description}</p>
+				<h3>Venue: {venue}</h3>
+				<p>{address}</p>
 				<Link href="/events">
 					<a className={styles.back}> {'<'} Go Back</a>
 				</Link>
@@ -49,20 +48,21 @@ export default function EventPage({ evt }) {
 }
 export async function getStaticPaths() {
 	const res = await fetch(`${API_URL}/api/events`);
-	const events = await res.json();
+	const json = await res.json();
+	const events = json.data;
 	const paths = events.map(evt => ({
-		params: { slug: evt.slug },
+		params: { slug: evt.attributes.slug },
 	}));
 	return {
-		// paths: [{ params: { id: 1 } }, { params: { id: 2 } }, { params: { id: 3 } }]
 		paths,
 		fallback: false,
 	};
 }
 
 export async function getStaticProps({ params: { slug } }) {
-	const res = await fetch(`${API_URL}/api/events/${slug}`);
-	const events = await res.json();
+	const res = await fetch(`${API_URL}/api/events?populate=*&_sort=date:ASC`);
+	const json = await res.json();
+	const events = json.data;
 	// console.log(events);
 	return {
 		props: { evt: events[0] },
@@ -72,7 +72,8 @@ export async function getStaticProps({ params: { slug } }) {
 
 // export async function getServerSideProps({ query: { slug } }) {
 // 	const res = await fetch(`${API_URL}/api/events/${slug}`);
-// 	const events = await res.json();
+// 	const json = await res.json();
+// 	const events = json.data;
 // 	console.log(events);
 // 	return {
 // 		props: { evt: events[0] },
