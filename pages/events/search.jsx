@@ -1,15 +1,17 @@
 import Layout from '@/components/Layout';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import EventItem from '@/components/Eventitem';
 import { API_URL } from '@/config/index';
 
-export default function SearchPage({ events }) {
-	const router = useRouter;
-	console.log(router);
+export default function SearchPage({ events, term }) {
+	console.log(term);
 	return (
 		<div>
-			<Layout title="Search Results">
-				<h1>Search Results for {router.query}</h1>
+			<Layout title="Search Results}">
+				<Link href="/">
+					<a> {'<'} Go Back </a>
+				</Link>
+				<h1>Search Results for {term}</h1>
 				{events.length === 0 && <h3>No Events to Show</h3>}
 				{events.map(evt => (
 					<EventItem key={evt.id} evt={evt} />
@@ -41,6 +43,6 @@ export async function getServerSideProps({ query: { term } }) {
 	const json = await res.json();
 	const events = json.data;
 	return {
-		props: { events },
+		props: { events, term },
 	};
 }
