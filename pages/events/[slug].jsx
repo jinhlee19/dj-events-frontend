@@ -48,7 +48,7 @@ export default function EventPage({ evt }) {
 				</span>
 				<h1>{name}</h1>
 				<ToastContainer />
-				{evt.attributes.image ? (
+				{evt.attributes.image.data ? (
 					<div className={styles.img}>
 						<Image src={image.data.attributes.formats.medium.url} width={960} height={600} alt="" />
 					</div>
