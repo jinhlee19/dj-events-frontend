@@ -115,6 +115,7 @@ export default function EditEventPage({ evt, id }) {
 }
 
 export async function getServerSideProps({ params: { id } }) {
+	// const res = await fetch(`${API_URL}/api/events?filters[id]id=${id}&populate=*`);
 	const res = await fetch(`${API_URL}/api/events/${id}?populate=*`);
 	const json = await res.json();
 	const evt = json.data;
