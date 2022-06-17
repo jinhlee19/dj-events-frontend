@@ -28,22 +28,24 @@ export default function AddEventPage() {
 
 		//validation
 		const hasEmptyField = Object.values(values).some(element => element === '');
+
 		if (hasEmptyField) {
 			toast.error('Please Fill in all the fields.');
 		}
 
-		const res = await fetch(`${API_URL}/events`, {
+		const res = await fetch(`${API_URL}/api/events`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({ data: values }),
 		});
+
 		if (!res.ok) {
 			toast.error('something went wrong');
 		} else {
 			const evt = await res.json();
-			router.push(`events/${evt.slug}`);
+			router.push(`/events/${evt.slug}`);
 		}
 	};
 

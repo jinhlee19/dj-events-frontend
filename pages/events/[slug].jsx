@@ -60,7 +60,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug } }) {
-	const res = await fetch(`${API_URL}/api/events?populate=*&_sort=date:ASC`);
+	const res = await fetch(`${API_URL}/api/events?populate=*`);
 	const json = await res.json();
 	const events = json.data;
 	console.log(events);

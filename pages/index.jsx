@@ -23,13 +23,13 @@ export default function HomePage({ events }) {
 	);
 }
 export async function getServerSideProps() {
-	const res = await fetch(`${API_URL}/api/events?populate=*&_sort=date:ASC&_limit=2`);
+	const res = await fetch(`${API_URL}/api/events?populate=*`);
 	const json = await res.json();
 	const events = json.data;
 
 	// console.log(events);
 	return {
-		props: { events: events },
+		props: { events },
 	};
 }
 
