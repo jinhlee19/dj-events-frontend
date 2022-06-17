@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 export default function EventPage({ evt }) {
 	const router = useRouter();
 	const { name, date, time, image, address, performers, description, venue } = evt.attributes;
-	// console.log(evt.attributes.image.data.attributes.formats.medium.url);
 	const deleteEvent = async e => {
 		if (confirm('are you sure?')) {
 			const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
@@ -33,7 +32,7 @@ export default function EventPage({ evt }) {
 		<Layout>
 			<div className={styles.event}>
 				<div className={styles.controls}>
-					<Link href={`/events/edit/{evt.id}`}>
+					<Link href={`/events/edit/${evt.id}`}>
 						<a>
 							<FaPencilAlt /> Edit Event
 						</a>
@@ -93,8 +92,10 @@ export default function EventPage({ evt }) {
 
 export async function getStaticPaths() {
 	const res = await fetch(`${API_URL}/api/events?populate=*`);
-	const eventsData = await res.json();
-	const events = eventsData.data;
+	const json = await res.json();
+	const events = json.data;
+
+	// TODO: 왜 이 부분에서 MAP으로 뿌리는건지? 해당 슬러그페이지 아닌가? getStaticPaths는 한페이지 해당이 아닌 전체 슬러그를 어떻게 뿌릴건지 결정하는건가??
 	const paths = events.map(evt => ({
 		params: { slug: `${evt.slug}` }, // slug must be passed as a String
 	}));
@@ -105,12 +106,13 @@ export async function getStaticPaths() {
 }
 export async function getStaticProps(
 	// params coming from getStaticPaths
+	// TODO: getStaticPaths에서 얼만큼의 데이터를 가져오는걸까?
 	{ params: { slug } }
 ) {
-	// const res = await fetch(`${API_URL}/api/events/${slug}`);
+	// Strapi v3:: const res = await fetch(`${API_URL}/api/events/${slug}`);
 	const res = await fetch(`${API_URL}/api/events?filters[slug]slug=${slug}&populate=*`);
-	const eventsData = await res.json();
-	const events = await eventsData.data;
+	const json = await res.json();
+	const events = await json.data;
 	return {
 		props: { evt: events[0] },
 		revalidate: 1,

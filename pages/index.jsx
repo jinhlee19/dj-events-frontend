@@ -4,7 +4,6 @@ import EventItem from '@/components/Eventitem';
 import { API_URL } from '@/config/index';
 
 export default function HomePage({ events }) {
-	// console.log(events);
 	return (
 		<div>
 			<Layout>
@@ -27,7 +26,6 @@ export async function getServerSideProps() {
 	const json = await res.json();
 	const events = json.data;
 
-	// console.log(events);
 	return {
 		props: { events },
 	};

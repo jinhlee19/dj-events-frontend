@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function EditEventPage({ evt, id }) {
 	console.log('evt: ' + evt);
 	console.log('id:' + id);
+
 	// const [values, setValues] = useState({
 	// 	name: evt.name,
 	// 	performers: evt.performers,
@@ -115,10 +116,11 @@ export default function EditEventPage({ evt, id }) {
 }
 
 export async function getServerSideProps({ params: { id } }) {
-	// const res = await fetch(`${API_URL}/api/events?filters[id]id=${id}&populate=*`);
-	const res = await fetch(`${API_URL}/api/events/${id}?populate=*`);
+	// const res = await fetch(`${API_URL}/api/events/${id}?populate=*`);
+	const res = await fetch(`${API_URL}/api/events?filters[id]id=${id}&populate=*`);
 	const json = await res.json();
 	const evt = json.data;
+
 	return {
 		props: {
 			id,
@@ -126,3 +128,29 @@ export async function getServerSideProps({ params: { id } }) {
 		},
 	};
 }
+
+// export async function getStaticPaths() {
+// 	const res = await fetch(`${API_URL}/api/events/edit?populate=*`);
+// 	const json = await res.json();
+// 	const events = json.data;
+// 	const paths = events.map(evt => ({
+// 		params: { id: `${evt.id}` }, // id must be passed as a String
+// 	}));
+// 	return {
+// 		paths,
+// 		fallback: true, // false points to 404
+// 	};
+// }
+// export async function getStaticProps(
+// 	// params coming from getStaticPaths
+// 	{ params: { id } }
+// ) {
+// 	// Strapi v3:: const res = await fetch(`${API_URL}/api/events/${id}`);
+// 	const res = await fetch(`${API_URL}/api/events?filters[id]id=${id}&populate=*`);
+// 	const json = await res.json();
+// 	const events = await json.data;
+// 	return {
+// 		props: { evt: events[0] },
+// 		revalidate: 1,
+// 	};
+// }
