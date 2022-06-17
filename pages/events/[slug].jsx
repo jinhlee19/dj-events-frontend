@@ -68,26 +68,51 @@ export default function EventPage({ evt }) {
 		</Layout>
 	);
 }
+// export async function getStaticPaths() {
+// 	const res = await fetch(`${API_URL}/api/events`);
+// 	const json = await res.json();
+// 	const events = json.data;
+// 	const paths = events.map(evt => ({
+// 		params: { slug: evt.attributes.slug },
+// 	}));
+// 	return {
+// 		paths,
+// 		fallback: false,
+// 	};
+// }
+
+// export async function getStaticProps({ params: { slug } }) {
+// 	const res = await fetch(`${API_URL}/api/events?filters[${slug}][$eq]populate=*`);
+// 	const json = await res.json();
+// 	const events = json.data;
+// 	return {
+// 		props: { evt: events[0] },
+// 		revalidate: 1,
+// 	};
+// }
+
 export async function getStaticPaths() {
-	const res = await fetch(`${API_URL}/api/events`);
-	const json = await res.json();
-	const events = json.data;
+	const res = await fetch(`${API_URL}/api/events?populate=*`);
+	const eventsData = await res.json();
+	const events = eventsData.data;
 	const paths = events.map(evt => ({
-		params: { slug: evt.attributes.slug },
+		params: { slug: `${evt.slug}` }, // slug must be passed as a String
 	}));
 	return {
 		paths,
-		fallback: false,
+		fallback: true, // false points to 404
 	};
 }
-
-export async function getStaticProps({ params: { slug } }) {
-	const res = await fetch(`${API_URL}/api/events?populate=*`);
-	const json = await res.json();
-	const events = json.data;
+export async function getStaticProps(
+	// params coming from getStaticPaths
+	{ params: { slug } }
+) {
+	// const res = await fetch(`${API_URL}/api/events/${slug}`);
+	const res = await fetch(`${API_URL}/api/events?filters[slug]slug=${slug}&populate=*`);
+	const eventsData = await res.json();
+	const events = await eventsData.data;
 	return {
 		props: { evt: events[0] },
-		// props: { evt: events.attributes.slug },
 		revalidate: 1,
 	};
 }
