@@ -7,28 +7,20 @@ import styles from '@/styles/Form.module.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function EditEventPage({ evt, id }) {
-	console.log('evt: ' + evt);
-	console.log('id:' + id);
+export default function EditEventPage({ evt }) {
+	console.log(evt);
+	console.log(evt.id);
 
-	// const [values, setValues] = useState({
-	// 	name: evt.name,
-	// 	performers: evt.performers,
-	// 	venue: evt.venue,
-	// 	address: evt.address,
-	// 	date: evt.date,
-	// 	time: evt.time,
-	// 	description: evt.description,
-	// });
 	const [values, setValues] = useState({
-		name: '',
-		performers: '',
-		venue: '',
-		address: '',
-		date: '',
-		time: '',
-		description: '',
+		name: evt.name,
+		performers: evt.performers,
+		venue: evt.venue,
+		address: evt.address,
+		date: evt.date,
+		time: evt.time,
+		description: evt.description,
 	});
+
 	const handleInputChange = e => {
 		const { name, value } = e.target;
 		setValues({ ...values, [name]: value });
@@ -119,13 +111,10 @@ export async function getServerSideProps({ params: { id } }) {
 	// const res = await fetch(`${API_URL}/api/events/${id}?populate=*`);
 	const res = await fetch(`${API_URL}/api/events?filters[id]id=${id}&populate=*`);
 	const json = await res.json();
-	const evt = json.data;
+	const events = json.data;
 
 	return {
-		props: {
-			id,
-			evt,
-		},
+		props: { evt: events[0].attributes },
 	};
 }
 
