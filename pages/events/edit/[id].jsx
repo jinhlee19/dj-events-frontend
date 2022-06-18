@@ -2,24 +2,29 @@ import Layout from '@/components/Layout';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Image from 'next/image';
 import { API_URL } from '@/config/index';
 import styles from '@/styles/Form.module.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { formatDateForInput } from '@/utils/formatDate';
+import { FaImage } from 'react-icons/fa';
 
 export default function EditEventPage({ evt }) {
-	console.log(evt);
-	console.log(evt.id);
+	const { name, performers, image, venue, address, date, time, description, slug } = evt.attributes;
 
 	const [values, setValues] = useState({
-		name: evt.name,
-		performers: evt.performers,
-		venue: evt.venue,
-		address: evt.address,
-		date: evt.date,
-		time: evt.time,
-		description: evt.description,
+		name: name,
+		performers: performers,
+		venue: venue,
+		address: address,
+		date: formatDateForInput(date),
+		time: time,
+		description: description,
 	});
+	const [imagePreview, setImagePreview] = useState(image.data ? image.data.attributes.formats.thumbnail.url : null);
+
+	console.log(evt);
 
 	const handleInputChange = e => {
 		const { name, value } = e.target;
@@ -36,8 +41,8 @@ export default function EditEventPage({ evt }) {
 			toast.error('Please Fill in all the fields.');
 		}
 
-		const res = await fetch(`${API_URL}/api/events`, {
-			method: 'POST',
+		const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
+			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -103,6 +108,21 @@ export default function EditEventPage({ evt }) {
 				</div>
 				<input type="submit" value="Update Event" className="btn" />
 			</form>
+			<h2> Event Image </h2>
+
+			{imagePreview ? (
+				<Image src={imagePreview} height={100} width={170} />
+			) : (
+				<div>
+					<p>No Image</p>
+				</div>
+			)}
+			<div>
+				{' '}
+				<button className="btn-secondary">
+					<FaImage /> Set Image
+				</button>
+			</div>
 		</Layout>
 	);
 }
@@ -114,7 +134,7 @@ export async function getServerSideProps({ params: { id } }) {
 	const events = json.data;
 
 	return {
-		props: { evt: events[0].attributes },
+		props: { evt: events[0] },
 	};
 }
 
