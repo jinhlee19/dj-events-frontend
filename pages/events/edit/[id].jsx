@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { formatDateForInput } from '@/utils/formatDate';
 import { FaImage } from 'react-icons/fa';
+import Modal from '@/components/Modal';
 
 export default function EditEventPage({ evt }) {
 	const { name, performers, image, venue, address, date, time, description, slug } = evt.attributes;
@@ -22,9 +23,11 @@ export default function EditEventPage({ evt }) {
 		time: time,
 		description: description,
 	});
+
 	const [imagePreview, setImagePreview] = useState(image.data ? image.data.attributes.formats.thumbnail.url : null);
 
-	console.log(evt);
+	const [showModal, setShowModal] = useState(false);
+	// console.log(evt);
 
 	const handleInputChange = e => {
 		const { name, value } = e.target;
@@ -119,10 +122,14 @@ export default function EditEventPage({ evt }) {
 			)}
 			<div>
 				{' '}
-				<button className="btn-secondary">
+				<button onClick={() => setShowModal(true)} className="btn-secondary">
 					<FaImage /> Set Image
 				</button>
 			</div>
+			<Modal show={showModal} onClose={() => setShowModal(false)}>
+				{' '}
+				Image Upload
+			</Modal>
 		</Layout>
 	);
 }
