@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ReactDOM } from 'react-dom';
+import ReactDOM from 'react-dom';
 import { FaTimes } from 'react-icons/fa';
 import styles from '@/styles/Modal.module.css';
 
@@ -33,3 +33,5 @@ export default function Modal({ show, onClose, children, title }) {
 		return null;
 	}
 }
+
+// https://devrecipes.net/modal-component-with-next-js/
