@@ -8,6 +8,11 @@ export default function ImageUpload() {
 	return (
 		<div className="styles.form">
 			<h1>Upload Event Image</h1>
+			<form onSubmit={handleSumbit}>
+				<div className="styles.file">
+					<input type="file" onChange={handleFileChange} />
+				</div>
+			</form>
 		</div>
 	);
 }
