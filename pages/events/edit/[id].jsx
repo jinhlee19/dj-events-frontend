@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { formatDateForInput } from '@/utils/formatDate';
 import { FaImage } from 'react-icons/fa';
 import Modal from '@/components/Modal';
+import ImageUpload from '@/components/ImageUpload';
 
 export default function EditEventPage({ evt }) {
 	const { name, performers, image, venue, address, date, time, description, slug } = evt.attributes;
@@ -32,6 +33,10 @@ export default function EditEventPage({ evt }) {
 	const handleInputChange = e => {
 		const { name, value } = e.target;
 		setValues({ ...values, [name]: value });
+	};
+
+	const imageUploaded = e => {
+		console.log('upload');
 	};
 
 	const handleSubmit = async e => {
@@ -128,7 +133,7 @@ export default function EditEventPage({ evt }) {
 			</div>
 			<Modal show={showModal} onClose={() => setShowModal(false)}>
 				{' '}
-				Image Upload
+				<ImageUpload evtId={evt.id} imageUploaded={imageUploaded} />
 			</Modal>
 		</Layout>
 	);
