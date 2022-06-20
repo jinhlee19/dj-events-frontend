@@ -35,8 +35,13 @@ export default function EditEventPage({ evt }) {
 		setValues({ ...values, [name]: value });
 	};
 
-	const imageUploaded = e => {
-		console.log('upload');
+	const imageUploaded = async e => {
+		const res = await fetch(`${API_URL}/api/events/${evt.id}`);
+		const json = await res.json();
+		const data = json.data;
+		console.log(data);
+		setImagePreview(image.data.attributes.formats.thumbnail.url);
+		setShowModal(false);
 	};
 
 	const handleSubmit = async e => {
@@ -119,7 +124,7 @@ export default function EditEventPage({ evt }) {
 			<h2> Event Image </h2>
 
 			{imagePreview ? (
-				<Image src={imagePreview} height={100} width={170} />
+				<Image src={imagePreview} height={100} width={170} alt="Preview Image" />
 			) : (
 				<div>
 					<p>No Image</p>
