@@ -4,7 +4,6 @@ import EventItem from '@/components/Eventitem';
 import { API_URL } from '@/config/index';
 
 export default function SearchPage({ events, term }) {
-	console.log(term);
 	return (
 		<div>
 			<Layout title="Search Results}">

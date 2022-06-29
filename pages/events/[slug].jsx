@@ -9,10 +9,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 
 export default function EventPage({ evt }) {
-	const router = useRouter();
-
 	const { name, date, time, image, address, performers, description, venue } = evt.attributes;
 
+	const router = useRouter();
 	const deleteEvent = async e => {
 		if (confirm('are you sure?')) {
 			const res = await fetch(`${API_URL}/api/events/${evt.id}`, {

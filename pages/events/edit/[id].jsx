@@ -1,5 +1,5 @@
 import Layout from '@/components/Layout';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -13,6 +13,7 @@ import Modal from '@/components/Modal';
 import ImageUpload from '@/components/ImageUpload';
 
 export default function EditEventPage({ evt }) {
+	const router = useRouter();
 	const { name, performers, image, venue, address, date, time, description, slug } = evt.attributes;
 
 	const [values, setValues] = useState({
@@ -24,7 +25,7 @@ export default function EditEventPage({ evt }) {
 		time: time,
 		description: description,
 	});
-
+	useEffect(() => {}, [imagePreview]);
 	const [imagePreview, setImagePreview] = useState(image.data ? image.data.attributes.formats.thumbnail.url : null);
 
 	const [showModal, setShowModal] = useState(false);
@@ -36,11 +37,12 @@ export default function EditEventPage({ evt }) {
 	};
 
 	const imageUploaded = async e => {
-		const res = await fetch(`${API_URL}/api/events/${evt.id}`);
+		// const res = await fetch(`${API_URL}/api/events/${evt.id}`);
+		const res = await fetch(`${API_URL}/api/events?filters[id]id=${evt.id}&populate=*`);
 		const json = await res.json();
-		const data = json.data;
-		console.log(data);
-		setImagePreview(image.data.attributes.formats.thumbnail.url);
+		const data = json.data[0];
+		// console.log(data.attributes.image.data.attributes.formats.thumbnail.url);
+		setImagePreview(data.attributes.image.data.attributes.formats.medium.url);
 		setShowModal(false);
 	};
 
@@ -70,7 +72,6 @@ export default function EditEventPage({ evt }) {
 		}
 	};
 
-	const router = useRouter();
 	return (
 		<Layout title="Edit New Event">
 			<Link href="/events">Go Back</Link>
@@ -131,13 +132,11 @@ export default function EditEventPage({ evt }) {
 				</div>
 			)}
 			<div>
-				{' '}
 				<button onClick={() => setShowModal(true)} className="btn-secondary">
 					<FaImage /> Set Image
 				</button>
 			</div>
 			<Modal show={showModal} onClose={() => setShowModal(false)}>
-				{' '}
 				<ImageUpload evtId={evt.id} imageUploaded={imageUploaded} />
 			</Modal>
 		</Layout>

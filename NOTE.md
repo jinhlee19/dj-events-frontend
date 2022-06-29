@@ -147,10 +147,10 @@ import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 
 export default function EventPage({ evt }) {
 	const deleteEvent = () => {
-		console.log('delete');
+		//console.log('delete');
 	};
 
-	console.log(evt);
+	// console.log(evt);
 	if (evt !== undefined) {
 		const { attributes } = evt;
 		console.log(attributes);
