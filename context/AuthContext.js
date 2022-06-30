@@ -14,23 +14,23 @@ export const AuthProvider = ({ children }) => {
 	// Register user
 	const register = async user => {
 		console.log(user);
-		// const res = await fetch(`${NEXT_URL}/api/register`, {
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 	},
-		// 	body: JSON.stringify(user),
-		// });
+		const res = await fetch(`${NEXT_URL}/api/register`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(user),
+		});
 
-		// const data = await res.json();
+		const data = await res.json();
 
-		// if (res.ok) {
-		// 	setUser(data.user);
-		// 	router.push('/account/dashboard');
-		// } else {
-		// 	setError(data.message);
-		// 	setError(null);
-		// }
+		if (res.ok) {
+			setUser(data.user);
+			router.push('/account/dashboard');
+		} else {
+			setError(data.message);
+			// setError(null);
+		}
 	};
 
 	// Login user
@@ -52,9 +52,8 @@ export const AuthProvider = ({ children }) => {
 
 		if (res.ok) {
 			setUser(data.user);
-			// router.push('/account/dashboard');
+			router.push('/account/dashboard');
 		} else {
-			// setError(data.message);
 			setError(data.error);
 			// 여기서 상태처리 끊어낼때 사용한다. 이때, toast 메세지를 받는 error까지 전달되지 않음. so it does not stay as its state
 			// setError(null);
@@ -80,7 +79,6 @@ export const AuthProvider = ({ children }) => {
 
 		if (res.ok) {
 			setUser(data.user);
-			router.push('/account/dashboard');
 		} else {
 			setUser(null);
 		}
