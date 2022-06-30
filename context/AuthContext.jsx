@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 	const [error, setError] = useState(null);
 
 	// const router = useRouter();
-	// useEffect(() => checkUserLoggedIn(), []);
+	useEffect(() => checkUserLoggedIn(), []);
 
 	// Register user
 	const register = async user => {
@@ -77,15 +77,14 @@ export const AuthProvider = ({ children }) => {
 
 	// Check if user is logged in
 	const checkUserLoggedIn = async user => {
-		console.log(user);
-		// const res = await fetch(`${NEXT_URL}/api/user`);
-		// const data = await res.json();
+		const res = await fetch(`${NEXT_URL}/api/user`);
+		const data = await res.json();
 
-		// if (res.ok) {
-		// 	setUser(data.user);
-		// } else {
-		// 	setUser(null);
-		// }
+		if (res.ok) {
+			setUser(data.user);
+		} else {
+			setUser(null);
+		}
 	};
 
 	return <AuthContext.Provider value={{ user, error, register, login, logout }}>{children}</AuthContext.Provider>;
