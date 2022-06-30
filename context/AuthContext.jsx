@@ -56,6 +56,8 @@ export const AuthProvider = ({ children }) => {
 		} else {
 			// setError(data.message);
 			setError(data.error);
+			// so it does not stay as its state
+			setError(null);
 		}
 	};
 
