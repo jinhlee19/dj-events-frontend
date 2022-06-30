@@ -1,3 +1,5 @@
+import Layout from '@/components/Layout';
+
 export default function DashboardPage() {
-	return <div>Enter</div>;
+	return <Layout title="User Dashboard">Enter</Layout>;
 }
