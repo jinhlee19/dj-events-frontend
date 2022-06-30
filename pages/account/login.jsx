@@ -15,8 +15,9 @@ export default function LoginPage() {
 	// useEffect(() => error && toast.error(error));
 	useEffect(() => {
 		if (error) {
-			console.log('error', error);
-			toast.error('error');
+			// 여기서 에러는 받고 있는데
+			// console.log('error', error);
+			toast.error(error);
 		}
 	}, [error]);
 

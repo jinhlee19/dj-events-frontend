@@ -17,8 +17,11 @@ export default async (req, res) => {
 
 		const data = await strapiRes.json();
 
+		// jwt token 터미널에서 출력된다.
+		console.log(data.jwt);
+
 		if (strapiRes.ok) {
-			// TODO: Set Cookie
+			// Setting Cookie
 			res.status(200).json({ user: data.user });
 			// 	res.setHeader(
 			// 		'Set-Cookie',

@@ -56,8 +56,8 @@ export const AuthProvider = ({ children }) => {
 		} else {
 			// setError(data.message);
 			setError(data.error);
-			// so it does not stay as its state
-			setError(null);
+			// 여기서 상태처리 끊어낼때 사용한다. 이때, toast 메세지를 받는 error까지 전달되지 않음. so it does not stay as its state
+			// setError(null);
 		}
 	};
 
