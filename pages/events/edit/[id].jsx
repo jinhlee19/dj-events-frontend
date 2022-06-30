@@ -143,11 +143,13 @@ export default function EditEventPage({ evt }) {
 	);
 }
 
-export async function getServerSideProps({ params: { id } }) {
+export async function getServerSideProps({ params: { id }, req }) {
 	// const res = await fetch(`${API_URL}/api/events/${id}?populate=*`);
 	const res = await fetch(`${API_URL}/api/events?filters[id]id=${id}&populate=*`);
 	const json = await res.json();
 	const events = json.data;
+
+	console.log(req.headers.cookie);
 
 	return {
 		props: { evt: events[0] },
