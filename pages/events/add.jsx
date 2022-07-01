@@ -46,6 +46,10 @@ export default function AddEventPage({ token }) {
 		});
 
 		if (!res.ok) {
+			if (res.status === 403 || res.status === 401) {
+				toast.error('no token included');
+				return;
+			}
 			toast.error('something went wrong');
 		} else {
 			const evt = await res.json();
