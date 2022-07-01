@@ -58,7 +58,7 @@ export default function EditEventPage({ evt, token }) {
 		}
 		// TODO PUT METHOD DOESNT WORK
 		const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
-			method: 'PUT',
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,

@@ -5,6 +5,7 @@ import styles from '@/styles/Form.module.css';
 export default function ImageUpload({ evtId, imageUploaded, token }) {
 	const [image, setImage] = useState(null);
 	// console.log(image);
+
 	const handleSumbit = async e => {
 		e.preventDefault();
 
