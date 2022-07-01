@@ -12,23 +12,42 @@ export default function EventPage({ evt }) {
 	const { name, date, time, image, address, performers, description, venue } = evt.attributes;
 
 	const router = useRouter();
-	const deleteEvent = async e => {
-		if (confirm('are you sure?')) {
-			const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
+	// const deleteEvent = async e => {
+	// 	if (confirm('are you sure?')) {
+	// 		const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
+	// 			method: 'DELETE',
+	// 		});
+	// 		// const res2 = await fetch(`${API_URL}/upload/files/${evt.image.id}`, {
+	// 		// 	method: 'DELETE',
+	// 		// });
+	// 		const data = await res.json();
+	// 		if (!res.ok) {
+	// 			toast.error(data.message);
+	// 		} else {
+	// 			router.push('/events');
+	// 		}
+	// 	}
+	// };
+
+	const deleteEvent = async id => {
+		console.log(id);
+		if (confirm('Are you sure?')) {
+			const res = await fetch(`${API_URL}/events/${id}`, {
 				method: 'DELETE',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			});
-			// const res2 = await fetch(`${API_URL}/upload/files/${evt.image.id}`, {
-			// 	method: 'DELETE',
-			// });
+
 			const data = await res.json();
+
 			if (!res.ok) {
 				toast.error(data.message);
 			} else {
-				router.push('/events');
+				router.reload();
 			}
 		}
 	};
-
 	return (
 		<Layout>
 			<div className={styles.event}>

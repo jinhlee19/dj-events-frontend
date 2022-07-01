@@ -4,6 +4,7 @@ import Layout from '@/components/Layout';
 import DashboardEvent from '@/components/DashboardEvents';
 import { API_URL } from '@/config/index';
 import styles from '@/styles/Dashboard.module.css';
+import { toast } from 'react-toastify';
 
 // export default function DashboardPage({ events, token }) {
 export default function DashboardPage({ events, token }) {
@@ -16,18 +17,18 @@ export default function DashboardPage({ events, token }) {
 					Authorization: `Bearer ${token}`,
 				},
 			});
-
+			console.log(token);
 			const data = await res.json();
 
 			if (!res.ok) {
-				toast.error(data.message);
+				toast.error('error');
 			} else {
 				router.reload();
 			}
 		}
 	};
 
-	console.log(events);
+	// console.log(events);
 	const router = useRouter();
 	return (
 		<Layout title="User Dashboard">

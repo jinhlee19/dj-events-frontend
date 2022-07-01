@@ -16,7 +16,6 @@ import ImageUpload from '@/components/ImageUpload';
 export default function EditEventPage({ evt, token }) {
 	const router = useRouter();
 	const { name, performers, image, venue, address, date, time, description, slug } = evt.attributes;
-	console.log(token);
 	const [values, setValues] = useState({
 		name: name,
 		performers: performers,
@@ -25,6 +24,7 @@ export default function EditEventPage({ evt, token }) {
 		date: formatDateForInput(date),
 		time: time,
 		description: description,
+		image: image,
 	});
 	useEffect(() => {}, [imagePreview]);
 	const [imagePreview, setImagePreview] = useState(image.data ? image.data.attributes.formats.thumbnail.url : null);
@@ -67,7 +67,10 @@ export default function EditEventPage({ evt, token }) {
 		});
 
 		if (!res.ok) {
-			toast.error('something went wrong');
+			if (res.status === 403 || res.status === 401) {
+				toast.error('no token included');
+				return;
+			}
 		} else {
 			const evt = await res.json();
 			router.push(`/events/${evt.data.attributes.slug}`);
