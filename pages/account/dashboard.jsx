@@ -8,12 +8,21 @@ import styles from '@/styles/Dashboard.module.css';
 // export default function DashboardPage({ events, token }) {
 export default function DashboardPage({ events }) {
 	console.log(events);
+	const router = useRouter();
 	return (
-		<Layout>
-			<h1>Dashboard</h1>
+		<Layout title="User Dashboard">
+			<div className={styles.dash}>
+				<h1>Dashboard</h1>
+				<h3>My Events</h3>
+				{events.map(evt => (
+					<h4 key={evt.id}>{evt.name}</h4>
+				))}
+				{/* {events.map(evt => (
+				<DashboardEvent key={evt.id} evt={evt} handleDelete={deleteEvent} />
+			))} */}
+			</div>
 		</Layout>
 	);
-	// const router = useRouter();
 
 	// const deleteEvent = async id => {
 	// 	if (confirm('Are you sure?')) {
@@ -33,19 +42,6 @@ export default function DashboardPage({ events }) {
 	// 		}
 	// 	}
 	// };
-
-	// return (
-	// 	<Layout title="User Dashboard">
-	// 		<div className={styles.dash}>
-	// 			<h1>Dashboard</h1>
-	// 			<h3>My Events</h3>
-
-	// 			{events.map(evt => (
-	// 				<DashboardEvent key={evt.id} evt={evt} handleDelete={deleteEvent} />
-	// 			))}
-	// 		</div>
-	// 	</Layout>
-	// );
 }
 
 export async function getServerSideProps({ req }) {
