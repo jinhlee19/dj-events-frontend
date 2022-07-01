@@ -1,3 +1,4 @@
+import { parseCookies } from '@/helpers/index';
 import Layout from '@/components/Layout';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
@@ -12,10 +13,10 @@ import { FaImage } from 'react-icons/fa';
 import Modal from '@/components/Modal';
 import ImageUpload from '@/components/ImageUpload';
 
-export default function EditEventPage({ evt }) {
+export default function EditEventPage({ evt, token }) {
 	const router = useRouter();
 	const { name, performers, image, venue, address, date, time, description, slug } = evt.attributes;
-
+	console.log(token);
 	const [values, setValues] = useState({
 		name: name,
 		performers: performers,
@@ -55,11 +56,12 @@ export default function EditEventPage({ evt }) {
 		if (hasEmptyField) {
 			toast.error('Please Fill in all the fields.');
 		}
-
+		// TODO PUT METHOD DOESNT WORK
 		const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify({ data: values }),
 		});
@@ -144,15 +146,16 @@ export default function EditEventPage({ evt }) {
 }
 
 export async function getServerSideProps({ params: { id }, req }) {
+	const { token } = parseCookies(req);
 	// const res = await fetch(`${API_URL}/api/events/${id}?populate=*`);
 	const res = await fetch(`${API_URL}/api/events?filters[id]id=${id}&populate=*`);
 	const json = await res.json();
 	const events = json.data;
 
-	console.log(req.headers.cookie);
-
+	// console.log(req.headers.cookie);
+	console.log(token);
 	return {
-		props: { evt: events[0] },
+		props: { evt: events[0], token },
 	};
 }
 

@@ -1,1 +1,10 @@
-해당 작성자의 글을 http://localhost:1337/api/events/me 에서 글을 꺼내오지 못하는 현상 발생 - 작성자가 별도로 표기나 저장되어있지 않음?
+## Issues 
+
+1. Public POST only - Login does not applied even with auth.
+2. Edit Page [src/events/edit/id.jsx] - Error after Refresh. auth issue?
+3. PUT request. fail to replace image
+
+
+## Questions or things to make
+1. How to Create category or tag relations to the post.
+2. search with multiple options 

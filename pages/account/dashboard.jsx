@@ -1,12 +1,32 @@
 import { parseCookies } from '@/helpers/index';
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
-
+import DashboardEvent from '@/components/DashboardEvents';
 import { API_URL } from '@/config/index';
 import styles from '@/styles/Dashboard.module.css';
 
 // export default function DashboardPage({ events, token }) {
-export default function DashboardPage({ events }) {
+export default function DashboardPage({ events, token }) {
+	const deleteEvent = async id => {
+		console.log(id);
+		if (confirm('Are you sure?')) {
+			const res = await fetch(`${API_URL}/events/${id}`, {
+				method: 'DELETE',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			const data = await res.json();
+
+			if (!res.ok) {
+				toast.error(data.message);
+			} else {
+				router.reload();
+			}
+		}
+	};
+
 	console.log(events);
 	const router = useRouter();
 	return (
@@ -15,33 +35,11 @@ export default function DashboardPage({ events }) {
 				<h1>Dashboard</h1>
 				<h3>My Events</h3>
 				{events.map(evt => (
-					<h4 key={evt.id}>{evt.name}</h4>
+					<DashboardEvent key={evt.id} evt={evt} handleDelete={deleteEvent} />
 				))}
-				{/* {events.map(evt => (
-				<DashboardEvent key={evt.id} evt={evt} handleDelete={deleteEvent} />
-			))} */}
 			</div>
 		</Layout>
 	);
-
-	// const deleteEvent = async id => {
-	// 	if (confirm('Are you sure?')) {
-	// 		const res = await fetch(`${API_URL}/events/${id}`, {
-	// 			method: 'DELETE',
-	// 			headers: {
-	// 				Authorization: `Bearer ${token}`,
-	// 			},
-	// 		});
-
-	// 		const data = await res.json();
-
-	// 		if (!res.ok) {
-	// 			toast.error(data.message);
-	// 		} else {
-	// 			router.reload();
-	// 		}
-	// 	}
-	// };
 }
 
 export async function getServerSideProps({ req }) {
@@ -59,7 +57,7 @@ export async function getServerSideProps({ req }) {
 	return {
 		props: {
 			events,
-			// token,
+			token,
 		},
 	};
 }
