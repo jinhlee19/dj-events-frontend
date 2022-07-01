@@ -13,6 +13,7 @@ export default function LoginPage() {
 
 	const { login, error } = useContext(AuthContext);
 	// useEffect(() => error && toast.error(error));
+
 	useEffect(() => {
 		if (error) {
 			toast.error(error);

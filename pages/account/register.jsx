@@ -20,7 +20,7 @@ export default function RegisterPage() {
 		e.preventDefault();
 
 		if (password !== passwordConfirm) {
-			// toast.error('Passwords do not match!');
+			toast.error('Passwords do not match!');
 			return;
 		}
 		//Send Context

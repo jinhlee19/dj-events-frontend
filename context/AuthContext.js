@@ -9,7 +9,10 @@ export const AuthProvider = ({ children }) => {
 	const [error, setError] = useState(null);
 
 	const router = useRouter();
-	useEffect(() => checkUserLoggedIn(), []);
+	// TODO 여기서 에러네
+	useEffect(() => {
+		checkUserLoggedIn();
+	}, []);
 
 	// Register user
 	const register = async user => {
